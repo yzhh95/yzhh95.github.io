@@ -29,15 +29,54 @@
       </tags>
   </entry>
   <entry>
+    <title>C++类的存储方式以及虚函数表</title>
+    <url>/2020/05/05/C-%E7%B1%BB%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8A%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8/</url>
+    <content><![CDATA[<ul>
+<li><h2 id="一、C-成员函数在内存中的存储方式"><a href="#一、C-成员函数在内存中的存储方式" class="headerlink" title="一、C++成员函数在内存中的存储方式"></a>一、C++成员函数在内存中的存储方式</h2><ul>
+<li>每个对象所占用的存储空间只是该对象的数据部分（虚函数指针和虚基类指针也属于数据部分）所占用的存储空间，而不包括函数代码所占用的存储空间。</li>
+</ul>
+<blockquote>
+<p>C++程序的内存格局通常分为四个区：全局数据区(data area)，代码区(code area)，栈区(stack area)，堆区(heap area)(即自由存储区)。全局数据区存放全局变量，静态数据和常量；所有类成员函数和非成员函数代码存放在代码区；为运行函数而分配的局部变量、函数参数、返回数据、返回地址等存放在栈区；余下的空间都被称为堆区。</p>
+</blockquote>
+<ul>
+<li>在类的定义时，类成员函数是被放在代码区，而类的静态成员变量在类定义时就已经在全局数据区分配了内存，因而它是属于类的。对于非静态成员变量，我们是在类的实例化过程中(构造对象)才在栈区或者堆区为其分配内存，是为每个对象生成一个拷贝，所以它是属于对象的。</li>
+<li>静态成员函数和非静态成员函数都是在类的定义时放在内存的代码区的，因而可以说它们都是属于类的，但是类为什么只能直接调用静态类成员函数，而非静态类成员函数(即使函数没有参数)只有类对象才能调用呢？原因是类的非静态类成员函数其实都内含了一个指向类对象的指针型参数(即this指针)，因而只有类对象才能调用(此时this指针有实值)。</li>
+</ul>
+<h2 id="二、虚函数表"><a href="#二、虚函数表" class="headerlink" title="二、虚函数表"></a>二、虚函数表</h2><ul>
+<li>编译器处理虚函数的方法是：为每个类对象添加一个隐藏成员，隐藏成员中保存了一个指向函数地址数组的指针，称为虚表指针（vptr），这种数组成为虚函数表（virtual function table, vtbl），即，每个类使用一个虚函数表，每个类对象用一个虚表指针。</li>
+<li>举个例子：基类对象包含一个虚表指针，指向基类中所有虚函数的地址表。派生类对象也将包含一个虚表指针，指向派生类虚函数表。看下面两种情况：<ul>
+<li>如果派生类重写了基类的虚方法，该派生类虚函数表将保存重写的虚函数的地址，而不是基类的虚函数地址。</li>
+<li>如果基类中的虚方法没有在派生类中重写，那么派生类将继承基类中的虚方法，而且派生类中虚函数表将保存基类中未被重写的虚函数的地址。注意，如果派生类中定义了新的虚方法，则该虚函数的地址也将被添加到派生类虚函数表中。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>总结：每一个含有虚函数（无论是其本身的，还是继承而来的）的类都至少有一个与之对应的虚函数表，其中存放着该类所有的虚函数对应的函数指针。</p>
+<ul>
+<li>示意图：<br><img src="https://img-blog.csdnimg.cn/20190730214035739.png" alt="在这里插入图片描述"></li>
+</ul>
+</blockquote>
+<h2 id="三、-多重继承的虚函数表"><a href="#三、-多重继承的虚函数表" class="headerlink" title="三、 多重继承的虚函数表"></a>三、 多重继承的虚函数表</h2><ul>
+<li>当一个类继承多个类，且多个基类都有虚函数时，子类对象中将包含多个虚函数表的指针（即多个vptr）</li>
+<li>示意图：<br><img src="https://img-blog.csdnimg.cn/20190730213958832.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>c++</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>github+hexo搭建个人博客</title>
     <url>/2020/05/03/git%E6%90%AD%E5%BB%BAblog/</url>
     <content><![CDATA[<h3 id="1-安装工具"><a href="#1-安装工具" class="headerlink" title="1. 安装工具"></a>1. 安装工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
-
 <p>换源加速下载hexo</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm config set registry https:&#x2F;&#x2F;registry.npm.taobao.org</span><br><span class="line">sudo npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
 <h3 id="2-hexo初始化"><a href="#2-hexo初始化" class="headerlink" title="2. hexo初始化"></a>2. hexo初始化</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo hexo init myblog</span><br><span class="line">cd myblog </span><br><span class="line"># 安装依赖包</span><br><span class="line">sudo npm install</span><br></pre></td></tr></table></figure>
-
 <p>新建完成后，指定文件夹目录下有：</p>
 <blockquote>
 <p>node_modules: 依赖包<br>public：存放生成的页面<br>scaffolds：生成文章的一些模板<br>source：用来存放你的文章<br>themes：主题<br>_config.yml: 博客的配置文件</p>
@@ -50,10 +89,8 @@
 <h3 id="3-github设置"><a href="#3-github设置" class="headerlink" title="3.github设置"></a>3.github设置</h3><p>创建仓库（注意仓库名一定写成username.github.io），设置打开pages</p>
 <h3 id="4-将hexo部署到github上"><a href="#4-将hexo部署到github上" class="headerlink" title="4. 将hexo部署到github上"></a>4. 将hexo部署到github上</h3><p>先安装deploy-git ，也就是部署的命令,这样你才能用命令部署到GitHub。<br>deploy时要你输入username和password</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在站点目录下输入下面的插件安装</span><br><span class="line">sudo npm install hexo-deployer-git --save</span><br><span class="line">#清除了你之前生成的东西</span><br><span class="line">sudo hexo clean  </span><br><span class="line">sudo hexo g</span><br><span class="line"># 部署文章</span><br><span class="line">sudo hexo d</span><br></pre></td></tr></table></figure>
-
 <p>再打开站点配置文件_config.yml，修改deloy</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yzhh95&#x2F;yzhh95.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-
 <blockquote>
 <p>注意要用git的格式，不要用https的格式，这样之后更新不用每次都输入密码账号</p>
 </blockquote>
@@ -70,98 +107,102 @@
   <entry>
     <title>vim常见快捷键</title>
     <url>/2020/05/04/vim%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<table>
+    <content><![CDATA[<div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">说明</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">G</td>
-<td align="center">文尾</td>
+<tbody>
+<tr>
+<td style="text-align:center">G</td>
+<td style="text-align:center">文尾</td>
 </tr>
 <tr>
-<td align="center">gg</td>
-<td align="center">文首</td>
+<td style="text-align:center">gg</td>
+<td style="text-align:center">文首</td>
 </tr>
 <tr>
-<td align="center">$</td>
-<td align="center">行尾</td>
+<td style="text-align:center">$</td>
+<td style="text-align:center">行尾</td>
 </tr>
 <tr>
-<td align="center">^</td>
-<td align="center">行首</td>
+<td style="text-align:center">^</td>
+<td style="text-align:center">行首</td>
 </tr>
 <tr>
-<td align="center">x</td>
-<td align="center">删除当前光标所在字符</td>
+<td style="text-align:center">x</td>
+<td style="text-align:center">删除当前光标所在字符</td>
 </tr>
 <tr>
-<td align="center">dd</td>
-<td align="center">删除当前光标所在行</td>
+<td style="text-align:center">dd</td>
+<td style="text-align:center">删除当前光标所在行</td>
 </tr>
 <tr>
-<td align="center">u</td>
-<td align="center">撤销上一步操作</td>
+<td style="text-align:center">u</td>
+<td style="text-align:center">撤销上一步操作</td>
 </tr>
 <tr>
-<td align="center">/</td>
-<td align="center">全文搜索（用完后取消高亮：noh）</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">全文搜索（用完后取消高亮：noh）</td>
 </tr>
 <tr>
-<td align="center">n</td>
-<td align="center">向下搜索</td>
+<td style="text-align:center">n</td>
+<td style="text-align:center">向下搜索</td>
 </tr>
 <tr>
-<td align="center">N</td>
-<td align="center">向上搜索</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">向上搜索</td>
 </tr>
 <tr>
-<td align="center">yy</td>
-<td align="center">复制当前行</td>
+<td style="text-align:center">yy</td>
+<td style="text-align:center">复制当前行</td>
 </tr>
 <tr>
-<td align="center">P</td>
-<td align="center">粘贴</td>
+<td style="text-align:center">P</td>
+<td style="text-align:center">粘贴</td>
 </tr>
 <tr>
-<td align="center">w</td>
-<td align="center">正向移动到下一个单词</td>
+<td style="text-align:center">w</td>
+<td style="text-align:center">正向移动到下一个单词</td>
 </tr>
 <tr>
-<td align="center">b</td>
-<td align="center">反向移动到上一个单词</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">反向移动到上一个单词</td>
 </tr>
 <tr>
-<td align="center">f{char}</td>
-<td align="center">当前行查找指定字符（；前进，后退</td>
+<td style="text-align:center">f{char}</td>
+<td style="text-align:center">当前行查找指定字符（；前进，后退</td>
 </tr>
 <tr>
-<td align="center">：vsp</td>
-<td align="center">竖直打开另一个文件编辑</td>
+<td style="text-align:center">：vsp</td>
+<td style="text-align:center">竖直打开另一个文件编辑</td>
 </tr>
 <tr>
-<td align="center">：n</td>
-<td align="center">切换到下一个文件</td>
+<td style="text-align:center">：n</td>
+<td style="text-align:center">切换到下一个文件</td>
 </tr>
 <tr>
-<td align="center">：N</td>
-<td align="center">切换到上一个文件</td>
+<td style="text-align:center">：N</td>
+<td style="text-align:center">切换到上一个文件</td>
 </tr>
 <tr>
-<td align="center">ctrl+w+w</td>
-<td align="center">不同窗口切换</td>
+<td style="text-align:center">ctrl+w+w</td>
+<td style="text-align:center">不同窗口切换</td>
 </tr>
 <tr>
-<td align="center">ZZ</td>
-<td align="center">保存退出</td>
+<td style="text-align:center">ZZ</td>
+<td style="text-align:center">保存退出</td>
 </tr>
 <tr>
-<td align="center">ZQ</td>
-<td align="center">不保存存</td>
+<td style="text-align:center">ZQ</td>
+<td style="text-align:center">不保存存</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>体会：</p>
 <p>vim的快捷键有很多，其中一部分都是重复的，还有很多都是不常用的，我们不必记许多，只要记一些常用就够用了！</p>
 ]]></content>
@@ -171,6 +212,45 @@
       <tags>
         <tag>linux</tag>
         <tag>快捷键</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>交叉熵的介绍</title>
+    <url>/2020/05/05/%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h1 id="交叉熵的介绍"><a href="#交叉熵的介绍" class="headerlink" title="交叉熵的介绍"></a>交叉熵的介绍</h1><h2 id="1、信息量"><a href="#1、信息量" class="headerlink" title="1、信息量"></a>1、信息量</h2><p>概率越小，信息量越大，事件$X=x_0$的信息量为：    </p>
+<script type="math/tex; mode=display">I(x_0)=-log(p(x_0))</script><h2 id="2、熵"><a href="#2、熵" class="headerlink" title="2、熵"></a>2、熵</h2><p>熵表示所有信息量的期望：</p>
+<script type="math/tex; mode=display">H(x)=-\sum_{i=1}^n p(x_i)log(p(x_i))</script><p>其中n代表事件X有n种可能</p>
+<h2 id="3、相对熵（KL散度）"><a href="#3、相对熵（KL散度）" class="headerlink" title="3、相对熵（KL散度）"></a>3、相对熵（KL散度）</h2><script type="math/tex; mode=display">D_{KL}(p||q)=\sum_{i=1}^np(x_i)log(\frac{p(x_i)}{q(x_i)})</script><p>物理意义：如果用P来描述目标问题，而不是用Q来描述问题，得到的信息增量    </p>
+<p>在机器学习中，P往往表示样本的真实分布，q表示模型预测的分布，相对熵越小，表示q分布和p分布越接近    </p>
+<h2 id="4、交叉熵-越小越好"><a href="#4、交叉熵-越小越好" class="headerlink" title="4、交叉熵    (越小越好)"></a>4、交叉熵    (<strong>越小越好</strong>)</h2><p>相对熵可以变形为：</p>
+<script type="math/tex; mode=display">D_{KL}(p||q)=-H(p(x))+[-\sum_{i=1}^np(x_i)log(q(x_i))]</script><p>等式的前半部分是p的熵，后半部分就是交叉熵：</p>
+<script type="math/tex; mode=display">H(p,q)=-\sum_{i=1}^np(x_i)log(q(x_i))</script><p>在机器学习中，我们需要评估labl和predicts之间的差距，可以使用KL散度，但由于KL散度前半部分不变，故在优化过程中，只需要关注交叉熵就行，所以一般在机器学习中直接用交叉熵作为loss函数，评估模型。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><blockquote>
+<p>在回归问题中，常用MSE做loss函数，但在逻辑分类中却用不好，这时需要用交叉熵</p>
+<h2 id="1-为什么MSE不适用于分类问题？"><a href="#1-为什么MSE不适用于分类问题？" class="headerlink" title="1. 为什么MSE不适用于分类问题？"></a>1. 为什么MSE不适用于分类问题？</h2><p>当sigmod函数和MSE一起使用时会出现梯度消失，原因是在使用MSE时，w、b的梯度均与sigmoid函数对z的偏导有关系，而sigmoid函数的偏导在自变量非常大或非常小是，偏导数的值接近与0，这将导致w、b的梯度将不会变化，也就是出现所谓的梯度消失现象。而使用交叉熵时，梯度就不会出现上述情况。所以MSE不适用于分类问题。</p>
+<h2 id="2-交叉熵不适用于回归问题"><a href="#2-交叉熵不适用于回归问题" class="headerlink" title="2. 交叉熵不适用于回归问题"></a>2. 交叉熵不适用于回归问题</h2><p>当MSE和交叉熵同事应用于多分类场景下，MSE对每个输出结果都非常看重，而交叉熵只对正确分类的结果看重。可见MSE除了让正确的分类尽量变大，还会让错误的分类变得平均，这对回归问题显得很重要，所以MSE适合回归问题的loss函数。</p>
+</blockquote>
+<h1 id="机器学习中交叉熵的应用"><a href="#机器学习中交叉熵的应用" class="headerlink" title="机器学习中交叉熵的应用"></a>机器学习中交叉熵的应用</h1><p>1、交叉熵在单分类中的使用</p>
+<ul>
+<li>这里的单类别指：每个样本只能有一个类别    </li>
+<li>交叉熵在单分类问题上的loss函数：<script type="math/tex; mode=display">loss=-\sum_{j=1}^m\sum_{i=1}^ny_{ji}log(\hat{y}_{ji})</script></li>
+<li>这里的预测概率是通过softmax计算，概率合为1</li>
+</ul>
+<p>2、交叉熵在多分类中使用    </p>
+<ul>
+<li>这里的多类别指：每个样本可以有多个类别    </li>
+<li>交叉熵在多分类问题上的loss问题：<script type="math/tex; mode=display">loss=\sum_{j=1}^m\sum_{i=1}^n-y_{ji}log(\hat{y}_{ji})-(1-y_{ji})log(1-\hat{y}_{ji})</script></li>
+<li>这里的预测是通过sigmoid计算，每个label都是独立分布的，输出归一化</li>
+</ul>
+<h1 id="交叉熵在pytorch的使用"><a href="#交叉熵在pytorch的使用" class="headerlink" title="交叉熵在pytorch的使用"></a>交叉熵在pytorch的使用</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">nn.CrossEntropyLoss()</span><br></pre></td></tr></table></figure>
+<p>这个损失函数和通常的交叉熵函数公式不一样，它是nn.logSoftmax()和nn.NLLLoss()的整合，公式如下：</p>
+<script type="math/tex; mode=display">
+\operatorname{loss}(x, \text { class })=-\log \left(\frac{\exp (x[\text { class }])}{\sum_{j} \exp (x[j])}\right)=-x[\text { class }]+\log \left(\sum_{j} \exp (x[j])\right)</script>]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
       </tags>
   </entry>
 </search>
