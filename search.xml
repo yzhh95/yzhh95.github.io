@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>C++中cast转换</title>
-    <url>/2020/05/04/C++%E4%B8%ADcast%E8%BD%AC%E6%8D%A2/</url>
+    <url>/2020/05/05/C++%E4%B8%ADcast%E8%BD%AC%E6%8D%A2/</url>
     <content><![CDATA[<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><ul>
 <li>可以进行继承层次的转换，它没有运行时类型检查来保证转换的安全性</li>
 <li>上行转换没有问题，但它的下行转换是不安全的</li>
@@ -26,6 +26,45 @@
       </categories>
       <tags>
         <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>github+hexo搭建个人博客</title>
+    <url>/2020/05/03/git%E6%90%AD%E5%BB%BAblog/</url>
+    <content><![CDATA[<h3 id="1-安装工具"><a href="#1-安装工具" class="headerlink" title="1. 安装工具"></a>1. 安装工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
+
+<p>换源加速下载hexo</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm config set registry https:&#x2F;&#x2F;registry.npm.taobao.org</span><br><span class="line">sudo npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-hexo初始化"><a href="#2-hexo初始化" class="headerlink" title="2. hexo初始化"></a>2. hexo初始化</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo hexo init myblog</span><br><span class="line">cd myblog </span><br><span class="line"># 安装依赖包</span><br><span class="line">sudo npm install</span><br></pre></td></tr></table></figure>
+
+<p>新建完成后，指定文件夹目录下有：</p>
+<blockquote>
+<p>node_modules: 依赖包<br>public：存放生成的页面<br>scaffolds：生成文章的一些模板<br>source：用来存放你的文章<br>themes：主题<br>_config.yml: 博客的配置文件</p>
+</blockquote>
+<p>再次输入命令：</p>
+<p>sudo hexo g #生成静态页面<br>sudo hexo s #启动服务器</p>
+<blockquote>
+<p>注：这时候就可以用浏览器打开网址： <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 来进行预览了。</p>
+</blockquote>
+<h3 id="3-github设置"><a href="#3-github设置" class="headerlink" title="3.github设置"></a>3.github设置</h3><p>创建仓库（注意仓库名一定写成username.github.io），设置打开pages</p>
+<h3 id="4-将hexo部署到github上"><a href="#4-将hexo部署到github上" class="headerlink" title="4. 将hexo部署到github上"></a>4. 将hexo部署到github上</h3><p>先安装deploy-git ，也就是部署的命令,这样你才能用命令部署到GitHub。<br>deploy时要你输入username和password</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在站点目录下输入下面的插件安装</span><br><span class="line">sudo npm install hexo-deployer-git --save</span><br><span class="line">#清除了你之前生成的东西</span><br><span class="line">sudo hexo clean  </span><br><span class="line">sudo hexo g</span><br><span class="line"># 部署文章</span><br><span class="line">sudo hexo d</span><br></pre></td></tr></table></figure>
+
+<p>再打开站点配置文件_config.yml，修改deloy</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yzhh95&#x2F;yzhh95.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意要用git的格式，不要用https的格式，这样之后更新不用每次都输入密码账号</p>
+</blockquote>
+<p>至此，github的博客就建立好了，可以访问<a href="http://yzhh95.github.io查看" target="_blank" rel="noopener">http://yzhh95.github.io查看</a></p>
+<h3 id="5-安装Next主题并自己配置（略）"><a href="#5-安装Next主题并自己配置（略）" class="headerlink" title="5. 安装Next主题并自己配置（略）"></a>5. 安装Next主题并自己配置（略）</h3>]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
   <entry>
@@ -135,45 +174,6 @@
       <tags>
         <tag>linux</tag>
         <tag>快捷键</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>github+hexo搭建个人博客</title>
-    <url>/2020/05/03/git%E6%90%AD%E5%BB%BAblog/</url>
-    <content><![CDATA[<h3 id="1-安装工具"><a href="#1-安装工具" class="headerlink" title="1. 安装工具"></a>1. 安装工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
-
-<p>换源加速下载hexo</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm config set registry https:&#x2F;&#x2F;registry.npm.taobao.org</span><br><span class="line">sudo npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-hexo初始化"><a href="#2-hexo初始化" class="headerlink" title="2. hexo初始化"></a>2. hexo初始化</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo hexo init myblog</span><br><span class="line">cd myblog </span><br><span class="line"># 安装依赖包</span><br><span class="line">sudo npm install</span><br></pre></td></tr></table></figure>
-
-<p>新建完成后，指定文件夹目录下有：</p>
-<blockquote>
-<p>node_modules: 依赖包<br>public：存放生成的页面<br>scaffolds：生成文章的一些模板<br>source：用来存放你的文章<br>themes：主题<br>_config.yml: 博客的配置文件</p>
-</blockquote>
-<p>再次输入命令：</p>
-<p>sudo hexo g #生成静态页面<br>sudo hexo s #启动服务器</p>
-<blockquote>
-<p>注：这时候就可以用浏览器打开网址： <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 来进行预览了。</p>
-</blockquote>
-<h3 id="3-github设置"><a href="#3-github设置" class="headerlink" title="3.github设置"></a>3.github设置</h3><p>创建仓库（注意仓库名一定写成username.github.io），设置打开pages</p>
-<h3 id="4-将hexo部署到github上"><a href="#4-将hexo部署到github上" class="headerlink" title="4. 将hexo部署到github上"></a>4. 将hexo部署到github上</h3><p>先安装deploy-git ，也就是部署的命令,这样你才能用命令部署到GitHub。<br>deploy时要你输入username和password</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在站点目录下输入下面的插件安装</span><br><span class="line">sudo npm install hexo-deployer-git --save</span><br><span class="line">#清除了你之前生成的东西</span><br><span class="line">sudo hexo clean  </span><br><span class="line">sudo hexo g</span><br><span class="line"># 部署文章</span><br><span class="line">sudo hexo d</span><br></pre></td></tr></table></figure>
-
-<p>再打开站点配置文件_config.yml，修改deloy</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yzhh95&#x2F;yzhh95.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意要用git的格式，不要用https的格式，这样之后更新不用每次都输入密码账号</p>
-</blockquote>
-<p>至此，github的博客就建立好了，可以访问<a href="http://yzhh95.github.io查看" target="_blank" rel="noopener">http://yzhh95.github.io查看</a></p>
-<h3 id="5-安装Next主题并自己配置（略）"><a href="#5-安装Next主题并自己配置（略）" class="headerlink" title="5. 安装Next主题并自己配置（略）"></a>5. 安装Next主题并自己配置（略）</h3>]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>博客</tag>
       </tags>
   </entry>
 </search>
