@@ -68,12 +68,9 @@
       </tags>
   </entry>
   <entry>
-    <title>vim</title>
+    <title>vim常见快捷键</title>
     <url>/2020/05/04/vim%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
-    <content><![CDATA[<p>Vim常用快捷键记录在如下表格：</p>
-<a id="more"></a>
-
-<table>
+    <content><![CDATA[<table>
 <thead>
 <tr>
 <th align="center">命令</th>
